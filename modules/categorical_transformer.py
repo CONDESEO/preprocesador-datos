@@ -32,14 +32,14 @@ def transformar_datos_categoricos(dataset, features):
         
         if opcion == "1":
             dataset = pd.get_dummies(dataset, columns=columnas_categoricas, drop_first=True)
-            print("Transformación completada con One-Hot Encoding.")
+            print("\nTransformación completada con One-Hot Encoding.")
         elif opcion == "2":
             label_encoders = {}
             for col in columnas_categoricas:
                 le = LabelEncoder()
                 dataset[col] = le.fit_transform(dataset[col])
                 label_encoders[col] = le
-            print("Transformación completada con Label Encoding.")
+            print("\nTransformación completada con Label Encoding.")
         elif opcion == "3":
             return dataset, False  # No se aplicó ningún cambio, sigue pendiente
         else:

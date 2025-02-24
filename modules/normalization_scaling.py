@@ -33,11 +33,11 @@ def normalizar_escalar_datos(dataset, features):
         if opcion == "1":
             scaler = MinMaxScaler()
             dataset[columnas_numericas] = scaler.fit_transform(dataset[columnas_numericas])
-            print("Normalización completada con Min-Max Scaling.")
+            print("\nNormalización completada con Min-Max Scaling.")
         elif opcion == "2":
             scaler = StandardScaler()
             dataset[columnas_numericas] = scaler.fit_transform(dataset[columnas_numericas])
-            print("Normalización completada con Z-score Normalization.")
+            print("\nNormalización completada con Z-score Normalization.")
         elif opcion == "3":
             return dataset, False  # No se aplicó ningún cambio, sigue pendiente
         else:
