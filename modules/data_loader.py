@@ -24,18 +24,18 @@ def cargar_datos():
             if not os.path.isabs(ruta):
                 ruta = os.path.abspath(ruta)
             if os.path.exists(ruta) and ruta.lower().endswith(('.csv', '.txt')):
-                print(f"✅ Archivo encontrado: {ruta}")
+                print(f"Archivo encontrado: {ruta}")
                 df = pd.read_csv(ruta, sep=None, engine='python')
                 return df
             else:
-                print(f"❌ Error: Archivo no encontrado o formato no válido. Ruta ingresada: {ruta}")
+                print(f"Error: Archivo no encontrado o formato no válido. Ruta ingresada: {ruta}")
 
         elif opcion == "2":
             ruta = input("Ingrese la ruta del archivo Excel: ").strip()
             if not os.path.isabs(ruta):
                 ruta = os.path.abspath(ruta)
             if os.path.exists(ruta) and ruta.lower().endswith('.xlsx'):
-                print(f"✅ Archivo encontrado: {ruta}")
+                print(f"Archivo encontrado: {ruta}")
                 try:
                     excel_file = pd.ExcelFile(ruta, engine='openpyxl')
                     hojas = excel_file.sheet_names
@@ -45,25 +45,25 @@ def cargar_datos():
                         df = pd.read_excel(ruta, sheet_name=hoja, engine='openpyxl')
                         return df
                     else:
-                        print("❌ Error: Nombre de hoja no válido.")
+                        print("Error: Nombre de hoja no válido.")
                 except Exception as e:
-                    print(f"❌ Error al abrir el archivo Excel: {e}")
+                    print(f"Error al abrir el archivo Excel: {e}")
             else:
-                print(f"❌ Error: Archivo no encontrado o formato incorrecto. Ruta ingresada: {ruta}")
+                print(f"Error: Archivo no encontrado o formato incorrecto. Ruta ingresada: {ruta}")
 
         elif opcion == "3":
             ruta = input("Ingrese la ruta de la base de datos SQLite: ").strip()
             if not os.path.isabs(ruta):
                 ruta = os.path.abspath(ruta)
             if os.path.exists(ruta) and ruta.lower().endswith(('.sqlite', '.db')):
-                print(f"✅ Base de datos encontrada: {ruta}")
+                print(f"Base de datos encontrada: {ruta}")
                 try:
                     conn = sqlite3.connect(ruta)
                     cursor = conn.cursor()
                     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
                     tablas = [tabla[0] for tabla in cursor.fetchall()]
                     if not tablas:
-                        print("❌ Error: No hay tablas en la base de datos.")
+                        print("Error: No hay tablas en la base de datos.")
                         conn.close()
                         continue
                     print("Tablas disponibles:")
@@ -76,24 +76,23 @@ def cargar_datos():
                             conn.close()
                             return df
                         else:
-                            print("❌ Error: Opción inválida.")
+                            print("Error: Opción inválida.")
                     except ValueError:
-                        print("❌ Error: Ingrese un número válido.")
+                        print("Error: Ingrese un número válido.")
                 except Exception as e:
-                    print(f"❌ Error al abrir la base de datos: {e}")
+                    print(f"Error al abrir la base de datos: {e}")
             else:
-                print(f"❌ Error: Archivo no encontrado o formato incorrecto. Ruta ingresada: {ruta}")
+                print(f"Error: Archivo no encontrado o formato incorrecto. Ruta ingresada: {ruta}")
 
         elif opcion == "4":
             return None  # Volver al menú principal
         else:
-            print("❌ Error: Opción no válida.")
+            print("Error: Opción no válida.")
 
-def mostrar_info(df, ruta):
+def mostrar_info(df):
     """
     Muestra información básica del dataset cargado.
     """
-    print("\n✅ Datos cargados correctamente desde:", ruta)
     print(f"Número de filas: {df.shape[0]}")
     print(f"Número de columnas: {df.shape[1]}")
     #print("\nTipos de datos:")
