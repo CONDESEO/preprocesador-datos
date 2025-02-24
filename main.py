@@ -34,7 +34,7 @@ def main():
         print(f"[✗] 4. Exportar datos (requiere preprocesado completo)" if not preprocesado_iniciado else "[✓] 4. Exportar datos")
         print("[✓] 5. Salir")
         
-        choice = input("Seleccione una opción: ").strip()
+        choice = input("\nSeleccione una opción: ").strip()
         
         if choice == "1":
             dataset = dl.cargar_datos()
