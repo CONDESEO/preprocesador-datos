@@ -55,7 +55,7 @@ def manejar_valores_atipicos(dataset, features):
                 Q3 = dataset[col].quantile(0.75)
                 IQR = Q3 - Q1
                 dataset = dataset[(dataset[col] >= (Q1 - 1.5 * IQR)) & (dataset[col] <= (Q3 + 1.5 * IQR))]
-            print("✅ Filas con valores atípicos eliminadas.")
+            print("Filas con valores atípicos eliminadas.")
         elif opcion == "2":
             for col in columnas_numericas:
                 Q1 = dataset[col].quantile(0.25)
@@ -63,9 +63,9 @@ def manejar_valores_atipicos(dataset, features):
                 IQR = Q3 - Q1
                 median_value = dataset[col].median()
                 dataset.loc[(dataset[col] < (Q1 - 1.5 * IQR)) | (dataset[col] > (Q3 + 1.5 * IQR)), col] = median_value
-            print("✅ Valores atípicos reemplazados con la mediana de cada columna.")
+            print("Valores atípicos reemplazados con la mediana de cada columna.")
         elif opcion == "3":
-            print("✅ Valores atípicos mantenidos sin cambios.")
+            print("Valores atípicos mantenidos sin cambios.")
         elif opcion == "4":
             return dataset, False  # No se aplicó ningún cambio, sigue pendiente
         else:

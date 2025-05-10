@@ -46,4 +46,4 @@ def transformar_datos_categoricos(dataset, features):
             print("⚠ Opción inválida. Intente de nuevo.")
             continue
         
-        return dataset, True  # Indica que la transformación está completa
+        return dataset, True, columnas_categoricas  # Indica que la transformación está completa

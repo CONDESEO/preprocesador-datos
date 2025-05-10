@@ -4,16 +4,21 @@ import modules.missing_values_handler as mvh
 import modules.categorical_transformer as ct
 import modules.normalization_scaling as ns
 import modules.outlier_handler as oh
+import modules.data_visualizer as dv
+import modules.data_exporter as de
+
 
 def main():
     dataset = None
+    dataset_original = None
     features, target = None, None
     seleccion_columnas_completada = False
     valores_faltantes_gestionados = False
     transformacion_categorica_completada = False
     normalizacion_completada = False
     valores_atipicos_gestionados = False
-    preprocesado_completado = False
+    visualizacion_completada = False
+    exportacion_completada = False
     
     while True:
         print("\n====================")
@@ -25,23 +30,29 @@ def main():
         if dataset is not None:
             print(f"[-] 2. Preprocesado de datos")
             print(f"  [✓] 2.1 Selección de columnas (completado)" if seleccion_columnas_completada else "  [✗] 2.1 Selección de columnas (pendiente)")
-            print(f"  [✓] 2.2 Manejo de datos faltantes (completado)" if valores_faltantes_gestionados else "  [-] 2.2 Manejo de datos faltantes (pendiente)")
+            print(f"  [✓] 2.2 Manejo de valores faltantes (completado)" if valores_faltantes_gestionados else "  [-] 2.2 Manejo de valores faltantes (pendiente)")
             print(f"  [✓] 2.3 Transformación de datos categóricos (completado)" if transformacion_categorica_completada else "  [-] 2.3 Transformación de datos categóricos (pendiente)")
             print(f"  [✓] 2.4 Normalización y escalado (completado)" if normalizacion_completada else "  [-] 2.4 Normalización y escalado (pendiente)")
             print(f"  [✓] 2.5 Detección y manejo de valores atípicos (completado)" if valores_atipicos_gestionados else "  [-] 2.5 Detección y manejo de valores atípicos (pendiente)")
         else:
             print("[✗] 2. Preprocesado de datos (requiere carga de datos)")
 
-        print(f"[✓] 3. Visualización de datos" if valores_atipicos_gestionados else "[✗] 3. Visualización de datos (requiere preprocesado completo)")
-        print(f"[✗] 4. Exportar datos (requiere preprocesado completo)" if not valores_atipicos_gestionados else "[✓] 4. Exportar datos")
+        print(f"[✓] 3. Visualización de datos" if visualizacion_completada else "[✗] 3. Visualización de datos (requiere preprocesado completo)")
+        if exportacion_completada:
+            print(f"[✓] 4. Exportar datos")
+        elif visualizacion_completada and not exportacion_completada:
+            print("[ ] 4. Exportar datos (disponible)")
+        else:
+            print("[✗] 4. Exportar datos(requiere visualización de datos)")
         print("[✓] 5. Salir")
         
         choice = input("Seleccione una opción: ").strip()
         
         if choice == "1":
             dataset = dl.cargar_datos()
+            dataset_original = dataset.copy() if dataset is not None else None
             if dataset is not None:
-                dl.mostrar_info(dataset)  # Mostrar información después de cargar datos
+                dl.mostrar_info(dataset)
         elif choice == "2" and dataset is not None:
             if not seleccion_columnas_completada:
                 features, target = cs.seleccionar_columnas(dataset)
@@ -50,20 +61,28 @@ def main():
             elif not valores_faltantes_gestionados:
                 dataset, valores_faltantes_gestionados = mvh.manejar_valores_faltantes(dataset, features, target)
             elif not transformacion_categorica_completada:
-                dataset, transformacion_categorica_completada = ct.transformar_datos_categoricos(dataset, features)
+                dataset, transformacion_categorica_completada, columnas_categoricas = ct.transformar_datos_categoricos(dataset, features)
             elif not normalizacion_completada:
-                dataset, normalizacion_completada = ns.normalizar_escalar_datos(dataset, features)
+                dataset, normalizacion_completada = ns.normalizar_escalar_datos(dataset, features, columnas_categoricas)
             elif not valores_atipicos_gestionados:
                 dataset, valores_atipicos_gestionados = oh.manejar_valores_atipicos(dataset, features)
         elif choice == "3" and valores_atipicos_gestionados:
-            print("📊 Mostrando visualización de datos...")
-        elif choice == "4" and valores_atipicos_gestionados:
-            print("💾 Exportando datos...")
+            visualizacion_completada = dv.visualizar_datos(dataset, dataset_original, features)
+        elif choice == "4":
+            if visualizacion_completada:
+                exportacion_completada = de.exportar_datos(dataset)
+            else:
+                print("\n=============================")
+                print(" Exportación de Datos ")
+                print("=============================")
+                print("No es posible exportar los datos hasta que se complete el preprocesado y la visualización.")
+                print("Por favor, finalice todas las etapas antes de continuar.")
+
         elif choice == "5":
-            print("👋 Saliendo del programa...")
+            print(" Saliendo del programa...")
             break
         else:
-            print("⚠ Opción inválida o bloqueada.")
+            print(" Opción inválida o bloqueada.")
 
 if __name__ == "__main__":
     main()
