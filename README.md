@@ -26,11 +26,12 @@ Puedes instalar las dependencias ejecutando:
 
 ```bash
 pip install -r requirements.txt
-
+```
 
 ## Ejecutar pruebas
 
 Desde la raíz del proyecto ejecutar:
 
+```bash
 python tests/test_runner.py
-
+```
