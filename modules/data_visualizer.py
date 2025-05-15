@@ -22,16 +22,36 @@ def graficar_histogramas(dataset):
     plt.show()
 
 def graficar_dispersion(dataset, dataset_original, columnas):
-    """Genera gráficos de dispersión antes y después de la normalización."""
+    """
+    Genera gráficos de dispersión antes y después del preprocesado
+    solo para las columnas que fueron normalizadas (columnas numéricas válidas).
+    """
+    if not columnas:
+        print("No hay columnas normalizadas para graficar.")
+        return
+
     for col in columnas:
         if col in dataset.columns and col in dataset_original.columns:
-            dataset_alineado = dataset_original[[col]].dropna().join(dataset[[col]], how="inner", lsuffix="_original", rsuffix="_procesado")
-            plt.figure(figsize=(8, 6))
-            plt.scatter(dataset_alineado[f"{col}_original"], dataset_alineado[f"{col}_procesado"], alpha=0.5)
-            plt.xlabel(f"{col} (Antes del Preprocesado)")
-            plt.ylabel(f"{col} (Después del Preprocesado)")
-            plt.title(f"Comparación de {col} Antes y Después de la Normalización")
+            plt.figure(figsize=(14, 5))
+
+            # Antes del preprocesado
+            plt.subplot(1, 2, 1)
+            plt.scatter(range(len(dataset_original[col])), dataset_original[col], alpha=0.5)
+            plt.title(f'{col} - Antes del Preprocesado')
+            plt.xlabel('Índice')
+            plt.ylabel(col)
+
+            # Después del preprocesado
+            plt.subplot(1, 2, 2)
+            plt.scatter(range(len(dataset[col])), dataset[col], alpha=0.5, color='green')
+            plt.title(f'{col} - Después del Preprocesado')
+            plt.xlabel('Índice')
+            plt.ylabel(col)
+
+            plt.tight_layout()
             plt.show()
+
+
 
 def graficar_heatmap_correlacion(dataset):
     """Genera un heatmap de correlación entre variables numéricas."""
@@ -42,9 +62,9 @@ def graficar_heatmap_correlacion(dataset):
         plt.title("Heatmap de Correlación entre Variables Numéricas")
         plt.show()
     else:
-        print("⚠ No hay suficientes columnas numéricas para generar un heatmap de correlación.")
+        print("No hay suficientes columnas numéricas para generar un heatmap de correlación.")
 
-def visualizar_datos(dataset, dataset_original, columnas):
+def visualizar_datos(dataset, dataset_original, columnas_normalizadas):
     """Permite al usuario seleccionar diferentes opciones de visualización."""
     while True:
         print("\n=============================")
@@ -64,10 +84,10 @@ def visualizar_datos(dataset, dataset_original, columnas):
         elif opcion == "2":
             graficar_histogramas(dataset)
         elif opcion == "3":
-            graficar_dispersion(dataset, dataset_original, columnas)
+            graficar_dispersion(dataset, dataset_original, columnas_normalizadas)
         elif opcion == "4":
             graficar_heatmap_correlacion(dataset)
         elif opcion == "5":
             return True  # Indica que la visualización se ha completado
         else:
-            print("⚠ Opción inválida. Intente de nuevo.")
+            print("Opción inválida. Intente de nuevo.")

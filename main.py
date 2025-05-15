@@ -28,7 +28,7 @@ def main():
 
         # Preprocesado de datos con sus pasos
         if dataset is not None:
-            print(f"[-] 2. Preprocesado de datos")
+            print(f"[-] 2. Preprocesado de datos. Para ejecutar siguiente subapartado introducir: 2")
             print(f"  [✓] 2.1 Selección de columnas (completado)" if seleccion_columnas_completada else "  [✗] 2.1 Selección de columnas (pendiente)")
             print(f"  [✓] 2.2 Manejo de valores faltantes (completado)" if valores_faltantes_gestionados else "  [-] 2.2 Manejo de valores faltantes (pendiente)")
             print(f"  [✓] 2.3 Transformación de datos categóricos (completado)" if transformacion_categorica_completada else "  [-] 2.3 Transformación de datos categóricos (pendiente)")
@@ -63,11 +63,11 @@ def main():
             elif not transformacion_categorica_completada:
                 dataset, transformacion_categorica_completada, columnas_categoricas = ct.transformar_datos_categoricos(dataset, features)
             elif not normalizacion_completada:
-                dataset, normalizacion_completada = ns.normalizar_escalar_datos(dataset, features, columnas_categoricas)
+                dataset, normalizacion_completada, columnas_normalizadas = ns.normalizar_escalar_datos(dataset, features, columnas_categoricas)
             elif not valores_atipicos_gestionados:
                 dataset, valores_atipicos_gestionados = oh.manejar_valores_atipicos(dataset, features)
         elif choice == "3" and valores_atipicos_gestionados:
-            visualizacion_completada = dv.visualizar_datos(dataset, dataset_original, features)
+            visualizacion_completada = dv.visualizar_datos(dataset, dataset_original, columnas_normalizadas)
         elif choice == "4":
             if visualizacion_completada:
                 exportacion_completada = de.exportar_datos(dataset)
@@ -79,10 +79,26 @@ def main():
                 print("Por favor, finalice todas las etapas antes de continuar.")
 
         elif choice == "5":
-            print(" Saliendo del programa...")
-            break
-        else:
-            print(" Opción inválida o bloqueada.")
+            salir_aplicacion()
+
+def salir_aplicacion():
+    print("\n=============================")
+    print(" Salir de la Aplicación ")
+    print("=============================")
+    print("¿Está seguro de que desea salir?")
+    print("  [1] Sí")
+    print("  [2] No")
+    opcion = input("Seleccione una opción: ").strip()
+
+    if opcion == "1":
+        print("\nCerrando la aplicación...")
+        exit(0)
+    elif opcion == "2":
+        print("\nRegresando al menú principal...")
+        return
+    else:
+        print("Opción inválida. Intente de nuevo.")
+
 
 if __name__ == "__main__":
     main()

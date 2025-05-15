@@ -13,7 +13,7 @@ def transformar_datos_categoricos(dataset, features):
         print("=============================")
         print("No se han detectado columnas categóricas en las variables de entrada seleccionadas.")
         print("No es necesario aplicar ninguna transformación.")
-        return dataset, True  # Indica que este paso ya está completo
+        return dataset, True, []  # Indica que este paso ya está completo
     
     print("\n=============================")
     print(" Transformación de Datos Categóricos ")
@@ -41,9 +41,9 @@ def transformar_datos_categoricos(dataset, features):
                 label_encoders[col] = le
             print("\nTransformación completada con Label Encoding.")
         elif opcion == "3":
-            return dataset, False  # No se aplicó ningún cambio, sigue pendiente
+            return dataset, False, []  # No se aplicó ningún cambio, sigue pendiente
         else:
-            print("⚠ Opción inválida. Intente de nuevo.")
+            print("Opción inválida. Intente de nuevo.")
             continue
         
         return dataset, True, columnas_categoricas  # Indica que la transformación está completa

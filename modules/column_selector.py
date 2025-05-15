@@ -23,22 +23,22 @@ def seleccionar_columnas(dataset):
             features_idx = [int(i.strip()) for i in features_idx.split(",")]
             
             if not features_idx:
-                print("⚠ Error: Debe seleccionar al menos una columna como feature.")
+                print("Error: Debe seleccionar al menos una columna como feature.")
                 continue
             
             target_idx = int(input("Ingrese el número de la columna de salida (target): ").strip())
             
             if target_idx in features_idx:
-                print("⚠ Error: La variable target no puede estar en las features.")
+                print("Error: La variable target no puede estar en las features.")
                 continue
             
             features = [columnas[i - 1] for i in features_idx]
             target = columnas[target_idx - 1]
             
-            print(f"\n✅ Selección guardada: Features = {features}, Target = {target}")
+            print(f"\nSelección guardada: Features = {features}, Target = {target}")
             return features, target
             
         except ValueError:
-            print("⚠ Error: Entrada inválida. Asegúrese de ingresar números separados por comas.")
+            print("Error: Entrada inválida. Asegúrese de ingresar números separados por comas.")
         except IndexError:
-            print("⚠ Error: Alguno de los números ingresados no corresponde a una columna válida.")
+            print("Error: Alguno de los números ingresados no corresponde a una columna válida.")

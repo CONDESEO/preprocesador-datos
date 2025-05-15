@@ -69,7 +69,7 @@ def manejar_valores_atipicos(dataset, features):
         elif opcion == "4":
             return dataset, False  # No se aplicó ningún cambio, sigue pendiente
         else:
-            print("⚠ Opción inválida. Intente de nuevo.")
+            print("Opción inválida. Intente de nuevo.")
             continue
         
         return dataset, True  # Indica que el manejo de valores atípicos está completo

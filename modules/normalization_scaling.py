@@ -17,10 +17,10 @@ def normalizar_escalar_datos(dataset, features, columnas_a_ignorar=[]):
                 # Si ya son 0 y 1, ignorar
                 if set(valores_unicos) == {0, 1}:
                     columnas_a_ignorar.append(col)
-                    print(f"⚠ '{col}' ya está codificada como binaria (0/1), se ignora en normalización.")
+                    print(f" '{col}' ya está codificada como binaria (0/1), se ignora en normalización.")
                 else:
                     # Convertir a 0/1 y luego ignorar
-                    print(f"⚠ '{col}' tiene solo dos valores únicos: {valores_unicos}. Se convierten a 0 y 1.")
+                    print(f" '{col}' tiene solo dos valores únicos: {valores_unicos}. Se convierten a 0 y 1.")
                     mapa = {valores_unicos[0]: 0, valores_unicos[1]: 1}
                     dataset[col] = dataset[col].map(mapa)
                     columnas_a_ignorar.append(col)
@@ -58,9 +58,9 @@ def normalizar_escalar_datos(dataset, features, columnas_a_ignorar=[]):
             dataset[columnas_numericas] = scaler.fit_transform(dataset[columnas_numericas])
             print("\nNormalización completada con Z-score Normalization.")
         elif opcion == "3":
-            return dataset, False
+            return dataset, False, []
         else:
             print("Opción inválida. Intente de nuevo.")
             continue
 
-        return dataset, True
+        return dataset, True, columnas_numericas
